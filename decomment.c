@@ -51,6 +51,9 @@ int main(void) {
                 state = sawSlashState(c);
                 break;
             case INSIDE_COMMENT:
+                if (c == '\n') {
+                    putchar('\n');  /* Preserve newlines in comments */
+                }
                 state = insideCommentState(c);
                 break;
             case ASTERISK_IN_COMMENT:
