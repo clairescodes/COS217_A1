@@ -56,13 +56,4 @@ ESCAPE_CHAR (accept)
 ASTERIK_IN_COMMENT (reject)
     *: ASTERIK_IN_COMMENT
     /: REGULAR
-    other: INSIDE_COMMENT    
-
-
-
-
-
-
-
-
-   
+    other: INSIDE_COMMENT   
