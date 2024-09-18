@@ -1,0 +1,68 @@
+====================================================
+DFAs
+Author: Claire Shin
+====================================================
+
+Note that:
+
+-- A DFA consists of states and transitions.
+
+-- Each transition is labeled with exactly one character or character
+   set.
+
+-- In a DFA the next state is a function of the current state and
+   the current character. The next state is a function of *only* the 
+   current state and the current character.
+
+-- A DFA indicates which state is the start state.
+
+-- A DFA indicates whether each state is an accepting state or a
+   rejecting state.
+----------------------------------------------------
+Textual representation of "no unterminated comments" DFA
+----------------------------------------------------
+REGULAR (accept)
+    /: SAW_SLASH
+    ": STRING_START
+    ': CHAR_START
+    other: REGULAR
+
+SAW_SLASH (accept)
+    *: INSIDE_COMMENT
+    /: SAW_SLASH 
+    ': CHAR_START
+    ": STRING_START
+
+INSIDE_COMMENT (reject)
+    *: ASTERIK_IN_COMMENT
+    other: INSIDE_COMMENT
+
+STRING_START (accept)
+    ": REGULAR
+    \: ESCAPE_STRING
+    other: STRING_START
+
+ESCAPE_STRING (accept)
+    any: STRING_START
+
+CHAR_START (accept)
+    ': REGULAR 
+    \: ESCAPE_CHAR
+    other: CHAR_START
+
+ESCAPE_CHAR (accept)
+    any: CHAR_START
+
+ASTERIK_IN_COMMENT (reject)
+    *: ASTERIK_IN_COMMENT
+    /: REGULAR
+    other: INSIDE_COMMENT    
+
+
+
+
+
+
+
+
+   
