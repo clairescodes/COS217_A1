@@ -60,7 +60,7 @@ int main(void) {
                 state = stringStartState(c);
                 break;
             case ESCAPE_STRING:
-                state = scapeStringState(c);
+                state = escapeStringState(c);
                 break;
             case CHAR_START:
                 state = charStartState(c);
