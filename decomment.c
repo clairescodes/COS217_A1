@@ -75,7 +75,7 @@ int main(void) {
     if (state == INSIDE_COMMENT || state == ASTERISK_IN_COMMENT) {
         return EXIT_FAILURE;
     } else if (state == SAW_SLASH) {
-        putchar('/');
+        putchar('/'); 
     }
 
     /* Otherwise, return success */
@@ -195,7 +195,7 @@ enum Statetype asteriskInCommentState(int c) {
         return ASTERISK_IN_COMMENT;  /* Stay in the asterisk state */
     } else if (c == '\n') {
         putchar('\n');
-        return ASTERISK_IN_COMMENT;  /* Preserve newlines in comments */
+        return INSIDE_COMMENT;  /* Preserve newlines in comments */
     } else {
         return INSIDE_COMMENT;       /* Return to the comment content */
     }
