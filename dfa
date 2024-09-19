@@ -18,42 +18,45 @@ Note that:
 
 -- A DFA indicates whether each state is an accepting state or a
    rejecting state.
-----------------------------------------------------
+--------------------------------------------------------
 Textual representation of "no unterminated comments" DFA
-----------------------------------------------------
-REGULAR (accept)
+--------------------------------------------------------
+REGULAR (accept) <-- the start state
     /: SAW_SLASH
-    ": STRING_START
-    ': CHAR_START
-    other: REGULAR
+    ": STRING_START (print duoble quotes) 
+    ': CHAR_START (print single quote) 
+    other: REGULAR (print the character)
 
 SAW_SLASH (accept)
-    *: INSIDE_COMMENT
-    /: SAW_SLASH 
-    ': CHAR_START
-    ": STRING_START
+    *: INSIDE_COMMENT (print space, begin comment)
+    /: SAW_SLASH (print slash) 
+    ': CHAR_START (print slash then single quote)
+    ": STRING_START (print slash then double quote)
+    other: REGULAR (print slash then character, false alarm for a comment)
 
 INSIDE_COMMENT (reject)
     *: ASTERIK_IN_COMMENT
-    other: INSIDE_COMMENT
-
-STRING_START (accept)
-    ": REGULAR
-    \: ESCAPE_STRING
-    other: STRING_START
-
-ESCAPE_STRING (accept)
-    any: STRING_START
-
-CHAR_START (accept)
-    ': REGULAR 
-    \: ESCAPE_CHAR
-    other: CHAR_START
-
-ESCAPE_CHAR (accept)
-    any: CHAR_START
+    \n: INSIDE_COMMENT (print newline, preserve line breaks)
+    other: INSIDE_COMMENT (suppress comment content)
 
 ASTERIK_IN_COMMENT (reject)
-    *: ASTERIK_IN_COMMENT
-    /: REGULAR
-    other: INSIDE_COMMENT   
+    /: REGULAR (end comment)
+    *: ASTERIK_IN_COMMENT (stay in comment, continue checking)
+    other: INSIDE_COMMENT (continue comment content suppression)
+    \n: INSIDE_COMMENT (preserve newline)
+
+STRING_START (accept)
+    ": REGULAR (print double quote, end string)
+    \: ESCAPE_STRING (print backslash, escape sequence)
+    other: STRING_START (print character inside string)
+
+ESCAPE_STRING (accept)
+    any: STRING_START (print escaped character)
+
+CHAR_START (accept)
+    ': REGULAR (print single quote, end character literal)
+    \: ESCAPE_CHAR (print backslash, escape sequence)
+    other: CHAR_START (print character inside character literal)
+
+ESCAPE_CHAR (accept)
+    any: CHAR_START (print the escaped character)
