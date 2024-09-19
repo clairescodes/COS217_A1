@@ -37,18 +37,26 @@ enum Statetype escapeCharState(int c);
  */
 int main(void) {
     int c; /* Current character from the input */
+    int line = 1; /* Track the current line number */
+    int commentStartLine = -1; /* Track the line number where the comment starts */
     
     /* Initialize the DFA in the REGULAR state */
     enum Statetype state = REGULAR;
 
     /* Process input character by character */
     while ((c = getchar()) != EOF) {
+        if (c == '\n') {
+            line++;  /* Increment line number */
+        }
         switch (state) {
             case REGULAR:
                 state = regularState(c);
                 break;
             case SAW_SLASH:
                 state = sawSlashState(c);
+                if (state == INSIDE_COMMENT) {
+                    commentStartLine = line;  /* Track where the comment starts */
+                }
                 break;
             case INSIDE_COMMENT:
                 state = insideCommentState(c);
@@ -73,6 +81,7 @@ int main(void) {
 
     /* If still inside a comment at the end of input, return failure */
     if (state == INSIDE_COMMENT || state == ASTERISK_IN_COMMENT) {
+        fprintf(stderr, "Error: line %d: unterminated comment\n", commentStartLine);
         return EXIT_FAILURE;
     } else if (state == SAW_SLASH) {
         putchar('/'); 
