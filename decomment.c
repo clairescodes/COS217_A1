@@ -191,6 +191,9 @@ enum Statetype asteriskInCommentState(int c) {
         return REGULAR;  /* End of comment */
     } else if (c == '*') {
         return ASTERISK_IN_COMMENT;  /* Stay in the asterisk state */
+    } else if (c == '\n') {
+        putchar('\n');
+        return INSIDE_COMMENT;       /* Preserve newlines in comments */
     } else {
         return INSIDE_COMMENT;       /* Return to the comment content */
     }
