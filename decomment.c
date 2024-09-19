@@ -282,7 +282,6 @@ enum Statetype charStartState(int c) {
  *  - Reads from stdin. 
  *  - Writes to stdout to print the escaped character.
  */
-//
 enum Statetype escapeCharState(int c) {
     putchar(c);  /* Output the escaped character */
     return CHAR_START;
