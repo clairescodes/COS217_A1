@@ -130,6 +130,7 @@ enum Statetype regularState(int c) {
  */
 enum Statetype sawSlashState(int c) {
     if (c == '*') {
+        putchar(' ');  /* Insert a space when comment starts */
         return INSIDE_COMMENT;  /* Start of a comment */
     } else if (c == '/') {
         return SAW_SLASH;       /* Handle consecutive slashes */
